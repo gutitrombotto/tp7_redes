@@ -5,6 +5,8 @@ Trabajo Practico 7 - Docker
 * Para su ejecucion se requiere instalar docker y tambien docker-compose.
 * Luego se debe ejecutar el comando (sudo) docker-compose up -d (-d para no mostrar los mensajes del demonio de Docker).
 
+La carpeta de dhcp es clonado desde https://github.com/jcbiellikltd/docker-dhcpd
+
 #### Se crearán todos los containers experesado en el archivo docker-compose.yml. ####
 * Para ingresar a los host se ejecuta el siguiente comando (sudo) docker attach <nombre_host>
 * Para ingresar a quagga se ingresa con docker exec -it <nombre_quagga>bash (se ingresa al ubuntu).
