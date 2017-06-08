@@ -1,0 +1,11 @@
+version: '2'
+services:
+ quagga11:
+  image: quagga-fpm_test
+  container_name: quagga11
+  stdin_open: true
+  tty: true
+  privileged: true
+  volumes:
+    - ~/redes-quagga/volumes/quagga1:/etc/quagga
+
