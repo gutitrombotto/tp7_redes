@@ -2,17 +2,29 @@ version: '2'
 services:
  quagga254:
   image: quagga-fpm_test
-  container_name: quagga254
+  container_name: quagga_red13
   stdin_open: true
   tty: true
   privileged: true
   volumes:
-    - ~/redes-quagga/volumes/quagga254:/etc/quagga
+    - ~/quagga/volumes/quagga_red13:/etc/quagga
   networks:
    redb:
     ipv4_address: 13.13.13.254
    redc:
-    ipv4_address: 10.10.10.254
+    ipv4_address: 172.18.0.2
+
+ quagga10:
+  image: quagga-fpm_test
+  container_name: quagga_red10
+  stdin_open: true
+  tty: true
+  privileged: true
+  volumes:
+    - ~/quagga/volumes/quagga_red10:/etc/quagga
+  networks:
+   redc:
+    ipv4_address: 172.18.0.254
 
  host1:
   build: ./hosts
@@ -89,7 +101,8 @@ services:
  host6:
   build: ./hosts
   networks:
-   - redb
+   redc:
+    ipv4_address: 172.18.0.135
   container_name: host6
   stdin_open: true
   tty: true
@@ -109,4 +122,4 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 10.10.10.0/24   
+      - subnet: 172.18.0.0/24   
