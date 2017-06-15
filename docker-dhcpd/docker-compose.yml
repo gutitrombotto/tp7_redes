@@ -1,0 +1,23 @@
+version: '2'
+services:
+ dhcp_server:
+  build: .
+  container_name: dhcp_server
+  privileged: true
+  tty: true
+  stdin_open: true
+  networks:
+   redb:
+    ipv4_address: 13.13.13.41
+  volumes:
+    - ./example/dhcpd.conf:/etc/dhcp/dhcpd.conf
+
+networks:
+  redb:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 13.13.13.0/24
+        gateway: 13.13.13.1
+
