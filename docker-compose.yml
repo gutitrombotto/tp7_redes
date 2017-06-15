@@ -1,32 +1,54 @@
 version: '2'
 services:
+ quagga254:
+  image: quagga-fpm_test
+  container_name: quagga254
+  stdin_open: true
+  tty: true
+  privileged: true
+  volumes:
+    - ~/redes-quagga/volumes/quagga254:/etc/quagga
+  networks:
+   redb:
+    ipv4_address: 13.13.13.254
+   redc:
+    ipv4_address: 10.10.10.254
+
  host1:
-  image: busybox
-  networks: 
-    redb:
-     ipv4_address: 13.13.13.11
+  build: ./hosts
+  networks:
+   - redb
   container_name: host1
   stdin_open: true
   tty: true
+  privileged: true
   entrypoint: /bin/sh
-  dns: 13.13.13.51
+
+ host2:
+  build: ./hosts
+  networks:
+   - redb
+  container_name: host2
+  stdin_open: true
+  tty: true
+  privileged: true
+  entrypoint: /bin/sh
 
  host3:
-  image: busybox
+  build: ./hosts
   networks:
-   redb:
-    ipv4_address: 13.13.13.5
+   - redb
   container_name: host3
   stdin_open: true
   tty: true
+  privileged: true
   entrypoint: /bin/sh
-  dns: 13.13.13.51  
 
  dns_server:
   build: ./dns_server
   container_name: master
   volumes:
-    - ./bind:/etc/bind
+    - ./dns_server/bind:/etc/bind
   stdin_open: true
   tty: true
   entrypoint: /bin/bash
@@ -45,10 +67,10 @@ services:
     - ~/docker-dhcpd/example/dhcpd.conf:/etc/dhcp/dhcpd.conf
  
  host5:
-  image: alpine
+  build: ./hosts
   networks:
    - redb
-  container_name: host5_dhcp
+  container_name: host5
   stdin_open: true
   tty: true
   privileged: true
@@ -62,6 +84,7 @@ services:
   stdin_open: true
   tty: true
   privileged: true
+  entrypoint: /bin/sh
 
  host6:
   build: ./hosts
@@ -71,18 +94,7 @@ services:
   stdin_open: true
   tty: true
   privileged: true
-
- quagga254:
-  image: quagga-fpm_test
-  container_name: quagga254
-  stdin_open: true
-  tty: true
-  privileged: true
-  volumes:
-    - ~/redes-quagga/volumes/quagga1:/etc/quagga
-  networks:
-   redb:
-    ipv4_address: 13.13.13.25
+  entrypoint: /bin/sh
 
 networks:
   redb:
@@ -90,4 +102,11 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 13.13.13.0/24   
+      - subnet: 13.13.13.0/24
+
+  redc:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.10.10.0/24   
